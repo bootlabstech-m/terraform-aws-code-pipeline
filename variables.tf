@@ -2,10 +2,10 @@ variable "region" {
   type        = string
   description = "describe your region"
 }
-# variable "role_arn" {
-#   type        = string
-#   description = "role of the account."
-# }
+variable "role_arn" {
+  type        = string
+  description = "role of the account."
+}
 
 variable "artifacts_bucket" {
   description = "artifacts bucket"
