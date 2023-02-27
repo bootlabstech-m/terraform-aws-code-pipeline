@@ -30,11 +30,6 @@ variable "ProjectName" {
   type = string
 }
 
-variable "bucket" {
-  description = "Name of S3 Bucket"
-  type = string
-}
-
 variable "acl" {
   description = "S3 Bucket permission : private / public"
 }
