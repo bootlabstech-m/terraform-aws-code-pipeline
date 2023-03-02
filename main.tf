@@ -18,7 +18,8 @@ assume_role_policy = <<EOF
 EOF
 }
 resource "aws_codepipeline" "codepipeline" {
-  name     = var.pipeline_name
+  for_each = { for pipeline in var.pipeline_details : pipeline.pipeline_name => pipeline } 
+  name     = each.value.pipeline_name
   role_arn = aws_iam_role.codepipeline_role.arn
 
   artifact_store {
@@ -40,8 +41,8 @@ resource "aws_codepipeline" "codepipeline" {
       
 
       configuration = {
-        RepositoryName   = var.repo_name
-        BranchName       = "main"
+        RepositoryName   = each.value.repo_name
+        BranchName       = each.value.branchname
         PollForSourceChanges = "false"
      }
     }
@@ -60,7 +61,7 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["build_output"]
 
       configuration = {
-        ProjectName = var.code_build_project_name
+        ProjectName = each.value.code_build_project_name
       }
     }
   }
@@ -68,6 +69,7 @@ resource "aws_codepipeline" "codepipeline" {
 
 resource "aws_s3_bucket" "codepipeline_bucket" {
   bucket = var.artifacts_bucket
+  acl    = "private"
 }
 
 
