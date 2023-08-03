@@ -16,6 +16,9 @@ assume_role_policy = <<EOF
   ]
 }
 EOF
+  lifecycle {
+    ignore_changes = [tags]
+  }
 }
 resource "aws_codepipeline" "codepipeline" {
   for_each = { for pipeline in var.pipeline_details : pipeline.pipeline_name => pipeline } 
@@ -65,11 +68,17 @@ resource "aws_codepipeline" "codepipeline" {
       }
     }
   }
+    lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 resource "aws_s3_bucket" "codepipeline_bucket" {
   bucket = var.artifacts_bucket
   acl    = "private"
+    lifecycle {
+    ignore_changes = [tags]
+  }
 }
 
 
